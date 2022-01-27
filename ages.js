@@ -78,6 +78,65 @@ app.post("/uang", (request, response) => {
     })
 })
 
+// endpoint 4
+app.post("/nilai", (request, response) => {
+    let nilai = request.body.nilai
+    let tunggal = 0
+    let rata = 0
+    let lulus = []
+    let tidaklulus = []
+
+    for (let i= 0; i < nilai.length; i++) {
+        rata+= (nilai[i].math + nilai[i].english) / 8
+    }
+
+    for (let i= 0; i < nilai.length; i++) {
+        tunggal= (nilai[i].math + nilai[i].english) / 2
+        if (tunggal >= rata  ){
+            lulus.push(nilai[i].nama)
+        }else if (tunggal < rata ) {
+            tidaklulus.push(nilai[i].nama)
+        }
+    }
+
+    return response.json({
+        "lulus" :  lulus,
+        "tidaklulus" : tidaklulus,
+        "rata": rata
+    })
+})
+
+// endpoint 5
+app.post("/diskon", (request,response) => {
+    // store the request data
+    let data = request.body.diskon
+    // create variabel
+    let total = 0
+    let harga = 0
+    let diskon = 0
+    let totalAkhir = 0
+    let totalItem = 0
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].qty >=  data[i].min_discount) {
+            total = data[i].price * data[i].qty
+            diskon = total * data[i].discount
+            harga = total - diskon
+        } else if (data[i].qty < data[i].min_discount){
+            harga = data[i].price * data[i].qty
+        }
+
+        totalAkhir += harga
+        totalItem += data[i].qty
+    }
+
+    // give response data
+    return response.json({
+        total : totalAkhir,
+        total_item : totalItem
+    })
+})
+
 app.listen(8000, () => {
     console.log(`Server run on port 8000`);
 })
