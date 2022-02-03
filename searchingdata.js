@@ -5,7 +5,7 @@ const app = express()
 // set to read a request data from JSON format
 app.use(express.json())
 
-// endpoint 5
+// endpoint 
 app.post("/searchdata", (request,response) => {
     let keyword = request.body.keyword
     let data = [
